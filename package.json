@@ -4,12 +4,9 @@
   "description": "pipelinev2-project",
   "main": "app.js",
   "scripts": {
+    "start": "node app",
+    "dev": "nodemon app",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "nodemonConfig": {
-    "ignore": [
-      "data/*"
-    ]
   },
   "author": "Petec0x0",
   "license": "ISC",

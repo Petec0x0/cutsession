@@ -23,6 +23,8 @@ db.once('open', () => {
     console.log('Database connection established');
 })
 
+app.use('', require('./routes'));
+
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
