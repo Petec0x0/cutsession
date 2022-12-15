@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema(
     {
+        userId: Schema.Types.ObjectId,
         username: {
             type: String
         },
@@ -25,7 +27,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        
+
         phoneNumber: {
             type: String,
             required: true
@@ -43,6 +45,8 @@ const userSchema = new mongoose.Schema(
     },
 
     {
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true },
         timestamps: true
     }
 );

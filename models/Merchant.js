@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const merchantSchema = new mongoose.Schema(
     {
+        merchantId: Schema.Types.ObjectId,
         username: {
             type: String
         },
@@ -25,7 +27,7 @@ const merchantSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        
+
         phoneNumber: {
             type: String,
             required: true
@@ -38,6 +40,8 @@ const merchantSchema = new mongoose.Schema(
     },
 
     {
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true },
         timestamps: true
     }
 );

@@ -10,6 +10,6 @@ const authController = require('../controllers/authController');
 
 router.post('/register/users', checkSchema(registerUserValidationSchema), authController.registerUser);
 router.post('/register/merchants', checkSchema(registerMerchantValidationSchema), authController.registerMerchant);
-router.post('/sign-in', checkSchema(loginValidationSchema), authController.loginUserOrMerchant);
+router.post('/sign-in', checkSchema(loginValidationSchema), authController.loginClient);
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const { User, Merchant } = require('../models');
 const { validationResult } = require('express-validator');
 
@@ -17,6 +18,7 @@ const registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         // create a new user object
         const user = await User.create({
+            userId: new mongoose.Types.ObjectId(),
             name: req.body.name,
             dob: req.body.dob,
             username: req.body.username,
@@ -28,7 +30,7 @@ const registerUser = async (req, res) => {
         });
 
         res.status(200).json({
-            userId: user._id
+            userId: user.userId
         });
 
     } catch (err) {
@@ -53,6 +55,7 @@ const registerMerchant = async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         // create a new merchant object
         const merchant = await Merchant.create({
+            merchantId: new mongoose.Types.ObjectId(),
             name: req.body.name,
             username: req.body.username,
             email: req.body.email,
@@ -63,7 +66,7 @@ const registerMerchant = async (req, res) => {
         });
 
         res.status(200).json({
-            merchantId: merchant._id
+            merchantId: merchant.merchantId
         });
 
     } catch (err) {
@@ -74,7 +77,7 @@ const registerMerchant = async (req, res) => {
     }
 }
 
-const loginUserOrMerchant = async (req, res) => {
+const loginClient = async (req, res) => {
     // Validate incoming input
     const errors = validationResult(req);
 
@@ -109,7 +112,7 @@ const loginUserOrMerchant = async (req, res) => {
             // return JWT
             const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
             res.json({
-                userId: user._id,
+                userId: user.userId,
                 token: token
             });
         } else {
@@ -132,7 +135,7 @@ const loginUserOrMerchant = async (req, res) => {
             // return JWT
             const token = jwt.sign({ username: merchant.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
             res.json({
-                merchantId: merchant._id,
+                merchantId: merchant.merchantId,
                 token: token
             });
         }
@@ -145,4 +148,4 @@ const loginUserOrMerchant = async (req, res) => {
     }
 }
 
-module.exports = { registerUser, registerMerchant, loginUserOrMerchant };
+module.exports = { registerUser, registerMerchant, loginClient };
