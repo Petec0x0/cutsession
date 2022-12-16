@@ -51,7 +51,7 @@ const createSessionValidationSchema = {
                 if(sT > eT){
                     throw ("startsAt time can't be higher than endsAt time");
                 }
-
+                
                 switch (value) {
                     case 'WeekDay':
                         /**
@@ -81,6 +81,12 @@ const createSessionValidationSchema = {
                         break;
                     default:
                         break;
+                }
+                
+                // make sure time slots is either 45, 60 or 90 minutes console.log(eT - sT)
+                const timeSlot = eT - sT;
+                if(!([45, 60, 90].includes(timeSlot))){
+                    throw ("Time slot has to be 45, 60 or 90 minutes");
                 }
 
                 return value;
