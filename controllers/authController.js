@@ -16,9 +16,11 @@ const registerUser = async (req, res) => {
 
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const id = new mongoose.Types.ObjectId();
         // create a new user object
         const user = await User.create({
-            userId: new mongoose.Types.ObjectId(),
+            _id: id,
+            userId: id,
             name: req.body.name,
             dob: req.body.dob,
             username: req.body.username,
@@ -53,9 +55,11 @@ const registerMerchant = async (req, res) => {
 
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const id = new mongoose.Types.ObjectId();
         // create a new merchant object
         const merchant = await Merchant.create({
-            merchantId: new mongoose.Types.ObjectId(),
+            _id: id,
+            merchantId: id,
             name: req.body.name,
             username: req.body.username,
             email: req.body.email,

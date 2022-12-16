@@ -5,7 +5,7 @@ const {
     registerUserValidationSchema,
     registerMerchantValidationSchema,
     loginValidationSchema
-} = require('../middlewares/validations');
+} = require('../middlewares/authValidations');
 const authController = require('../controllers/authController');
 
 router.post('/register/users', checkSchema(registerUserValidationSchema), authController.registerUser);

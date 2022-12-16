@@ -1,6 +1,5 @@
 const { User, Merchant } = require('../models');
 const { validationResult } = require('express-validator');
-const { count } = require('../models/Merchant');
 
 const getClients = async (req, res) => {
     /**
