@@ -1,0 +1,102 @@
+const { validationResult } = require('express-validator');
+const mongoose = require('mongoose');
+const { Booking, StudioSession } = require('../models');
+
+const bookASession = async (req, res) => {
+    /**
+     * This controller books an available studio session 
+     * for a user.
+     */
+    // Validate incoming input
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            errors: errors.array()
+        });
+    }
+
+    const sessionId = req.body.sessionId;
+    const date = req.body.date;
+    const userId = req.body.userId;
+    const notes = req.body.notes;
+    const title = req.body.title;
+
+    // find the picked session
+    const session = await StudioSession.findOne({ sessionId });
+
+    const id = new mongoose.Types.ObjectId();
+    // create a new Booking object
+    const booking = await Booking.create({
+        _id: id,
+        bookingId: id,
+        bookingRef: id,
+        userId: userId,
+        sessionId: sessionId,
+        date: date,
+        startsAt: session.startsAt,
+        endsAt: session.endsAt,
+        notes: notes,
+        title: title
+    });
+
+    res.status(200).json({
+        bookingId: booking.bookingId,
+        bookingRef: booking.bookingRef
+    });
+
+    try {
+
+    } catch (err) {
+        return res.status(500).json({
+            message: err.message,
+            success: false
+        });
+    }
+}
+
+const retrieveBookedSessions = async (req, res) => {
+    /**
+     * This controller retrieve a paginated list of bookings for a city. 
+     * Can narrow down to bookings for a merchant and within a period. 
+     * Period can be a single date or a date-range formatted as startDate:endDate
+     */
+    // Validate incoming input
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            errors: errors.array()
+        });
+    }
+
+    const limit = parseInt(req.query.limit) || 20;
+    const offset = parseInt(req.query.offset) || 1;
+    const city = req.query.city;
+    const merchant = req.query.merchant || '';
+    const period = req.query.period;
+
+    try {
+        let bookings;
+        bookings = await Booking.find({
+            
+        })
+            .skip((offset - 1) * limit)
+            .limit(limit);
+
+        res.status(200).json({
+            count: bookings.length,
+            next: "http://example.com",
+            previous: "http://example.com",
+            data: bookings
+        });
+
+    } catch (err) {
+        return res.status(500).json({
+            message: err.message,
+            success: false
+        });
+    }
+}
+
+module.exports = { bookASession, retrieveBookedSessions };
