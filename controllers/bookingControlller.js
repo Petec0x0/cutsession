@@ -26,7 +26,8 @@ const bookASession = async (req, res) => {
     // find the picked session
     const session = await StudioSession.findOne({ sessionId });
     const id = new mongoose.Types.ObjectId();
-    const strategy = new RandomStrategy(9, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    const strategy = new DerivedStrategy(9, [id, date]);
+    //const strategy = new RandomStrategy(9, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
     const bookingRef = new BookingRef(strategy).generateRef();
 
     // create a new Booking object
