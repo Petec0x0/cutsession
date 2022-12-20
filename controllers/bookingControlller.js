@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 const { Booking, StudioSession } = require('../models');
+const {RandomStrategy, DerivedStrategy, BookingRef} = require('../utils');
 
 const bookASession = async (req, res) => {
     /**
@@ -24,13 +25,15 @@ const bookASession = async (req, res) => {
 
     // find the picked session
     const session = await StudioSession.findOne({ sessionId });
-
     const id = new mongoose.Types.ObjectId();
+    const strategy = new RandomStrategy(9, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    const bookingRef = new BookingRef(strategy).generateRef();
+
     // create a new Booking object
     const booking = await Booking.create({
         _id: id,
         bookingId: id,
-        bookingRef: id,
+        bookingRef: bookingRef,
         userId: userId,
         sessionId: sessionId,
         date: date,

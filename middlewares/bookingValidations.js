@@ -1,4 +1,4 @@
-const { StudioSession } = require('../models');
+const { StudioSession, Booking } = require('../models');
 
 const createBookingValidationSchema = {
     sessionId: {
@@ -9,7 +9,18 @@ const createBookingValidationSchema = {
                     sessionId: value
                 }).then(session => {
                     if (!session) {
-                        return Promise.reject('Invalid session Id')
+                        return Promise.reject('Invalid session Id');
+                    }
+                })
+            },
+            options: (value, { req }) => {
+                const date = req.body.date;
+                return Booking.find({
+                    sessionId: value,
+                    date: date
+                }).then(booking => {
+                    if (booking.length > 0) {
+                        return Promise.reject('Session/Slot already taken by another customer');
                     }
                 })
             }
