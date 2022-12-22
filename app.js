@@ -1,10 +1,18 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const morgan = require('morgan');
+const path = require('path');
+var fs = require('fs');
 require('dotenv').config();
 
 const app = express();
 // parse requests of content-type - application/json
 app.use(express.json());
+// create a write stream (in append mode)
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+
+// setup the logger
+app.use(morgan('combined', { stream: accessLogStream }))
 
 // Database connection
 // Store the DB_HOST value as a variable

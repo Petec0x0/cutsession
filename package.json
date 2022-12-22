@@ -4,8 +4,8 @@
   "description": "pipelinev2-project",
   "main": "app.js",
   "scripts": {
-    "start": "node app",
-    "dev": "nodemon app",
+    "start": "node -r newrelic app",
+    "dev": "nodemon -r newrelic app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Petec0x0",
@@ -16,7 +16,9 @@
     "express": "^4.18.2",
     "express-validator": "^6.14.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.8.0"
+    "mongoose": "^6.8.0",
+    "morgan": "^1.10.0",
+    "newrelic": "^9.7.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

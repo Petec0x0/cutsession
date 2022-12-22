@@ -1,2 +1,4 @@
 .env
 /node_modules
+access.log
+newrelic_agent.log
