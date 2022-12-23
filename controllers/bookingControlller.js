@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 const { Booking, StudioSession } = require('../models');
-const {RandomStrategy, DerivedStrategy, BookingRef} = require('../utils');
+const { RandomStrategy, DerivedStrategy, BookingRef } = require('../utils');
 
 const bookASession = async (req, res) => {
     /**
@@ -79,11 +79,28 @@ const retrieveBookedSessions = async (req, res) => {
     const city = req.query.city;
     const merchant = req.query.merchant || '';
     const period = req.query.period;
+    let startDate = new Date(-8640000000000000);
+    let endDate = new Date(8640000000000000);
 
     try {
+        // check if peroid was specified
+        if (period) {
+            // check if period has start and end date
+            const splitPeriod = period.split(':');
+            if (splitPeriod.length > 1) {
+                startDate = new Date(splitPeriod[0]);
+                endDate = new Date(splitPeriod[1]);
+            } else {
+                startDate = new Date(splitPeriod[0]);
+            }
+        }
+
         let bookings;
         bookings = await Booking.find({
-            
+            date: {
+                "$gte": startDate,
+                "$lt": endDate
+            }
         })
             .skip((offset - 1) * limit)
             .limit(limit);
