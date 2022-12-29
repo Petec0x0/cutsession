@@ -1,5 +1,6 @@
 # cutsession
 Pipeline V2 project
+https://pipeline.stoplight.io/docs/pipelinev2-projects/branches/main/sprgmajz1e0wb-cut-session
 
 
 ## Endpoints
